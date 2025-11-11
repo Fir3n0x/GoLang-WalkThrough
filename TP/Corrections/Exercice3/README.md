@@ -2,15 +2,19 @@
 
 ## Serveur de chat concurrent avec Echo
 
+```html
+../Assets/demo-exo3.mp4
+```
+
 Dans cet exercice, vous allez implémenter la partie serveur d’une application de chat en Go.
 Le code HTML du client est déjà fourni pour la structure et l’interface, vous n’avez donc qu’à vous concentrer sur la logique serveur.
 
 Objectif
 
--Créer un serveur HTTP avec Echo qui gère un chat en temps réel.
--Utiliser WebSockets pour la communication bidirectionnelle.
--Exploiter les goroutines et channels pour gérer la concurrence.
--Diffuser les messages à tous les clients connectés.
+* Créer un serveur HTTP avec Echo qui gère un chat en temps réel.
+* Utiliser WebSockets pour la communication bidirectionnelle.
+* Exploiter les goroutines et channels pour gérer la concurrence.
+* Diffuser les messages à tous les clients connectés.
 
 ---
 
@@ -19,18 +23,18 @@ Objectif
 1. Implémentez un serveur HTTP avec Echo.
 2. Ajoutez une route /ws qui gère les connexions WebSocket.
 3. Chaque client doit pouvoir :
-    -Se connecter au serveur.
-    -Envoyer des messages.
-    -Recevoir les messages des autres clients.
+    * Se connecter au serveur.
+    * Envoyer des messages.
+    * Recevoir les messages des autres clients.
 4. Gérez la concurrence proprement :
-    -Utilisez un channel pour la diffusion des messages.
-    -Synchronisez avec un mutex pour la liste des clients.
+    * Utilisez un channel pour la diffusion des messages.
+    * Synchronisez avec un mutex pour la liste des clients.
 
 
 Bonus :
 
-Ajouter des pseudos.
-Limiter le nombre de connexions.
+* Ajouter des pseudos.
+* Limiter le nombre de connexions.
 
 ---
 
