@@ -36,13 +36,7 @@ Crez un serveur de réponse à l'aide du framework Echo de Go.
 ### Construire l'image Docker
 
 ```bash
-```bash
 docker build -t ctf-go .
-```
-```
-```
-```
-```
 ```
 
 ### Exécuter le container
@@ -56,3 +50,4 @@ docker run -p 8080:80 ctf-go
 Ouvrez votre navigateur et rendez-vous sur :
 
 http://localhost:8080/
+
