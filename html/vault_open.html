@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coffre déverrouillé</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+    }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(90rem 60rem at 70% -10%, #0b1220, var(--bg));
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      text-align: center;
+      line-height: 1.6;
+    }
+    .panel {
+      max-width: 600px;
+      padding: 2rem;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(148,163,184,0.2);
+      backdrop-filter: blur(3px);
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    p {
+      margin: 0.6rem 0;
+    }
+    .mystery {
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h1>Coffre déverrouillé</h1>
+    <p>Vous avez pénétré dans le serveur...</p>
+    <p>Un mystérieux client souhaite communiquer avec vous.</p>
+    <p>Construisez un serveur pour lui répondre, et peut-être qu’il vous offrira un cadeau.</p>
+    <p class="mystery">“Le dialogue est la clé. Le cadeau n’apparaît qu’à ceux qui savent écouter.”</p>
+  </div>
+</body>
+</html>
