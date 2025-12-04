@@ -96,5 +96,5 @@ go run 2-1.go '$2a$10$I8RAZxW71RBVFTmeHOoXHO1e1bk8EaGsA0f.AZBZ8UxIQfLSCsami' .\r
 Version concurrente :
 
 ```bash
-go run 2-2 '$2a$10$dJq4XBcA/CfnKwORyroj7e86RY5UbwkTomWzSo4AHnMTO7kdh7rae' .\10k-most-common.txt
+go run 2-2.go '$2a$10$dJq4XBcA/CfnKwORyroj7e86RY5UbwkTomWzSo4AHnMTO7kdh7rae' .\10k-most-common.txt
 ```

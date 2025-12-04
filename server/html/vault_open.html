@@ -121,18 +121,43 @@
   </div>
 
   <script>
-    const messages = [
-      "mysterious-client~$> Bienvenue dans le coffre, Gopher !",
-      "mysterious-client~$> Cela fait une éternité que je suis bloqué ici...",
-      "mysterious-client~$> Je vais tester si tu es prêt à dialoguer.",
-      "mysterious-client~$> Envoi GET /ping",
-      "mysterious-client~$> Envoi GET /echo",
-      "mysterious-client~$> Envoi POST /flag",
-      "mysterious-client~$> FLAG{Bravo_Tu_As_Reussi}"
-    ];
+    let messages = generateChallenge();
 
     let index = 0;
     let intervalId;
+
+    function generateChallenge() {
+      return [
+        "mysterious-client is connected.",
+        "mysterious-client~$> Bienvenue dans le coffre, Gopher !",
+        "mysterious-client~$> Cela fait une éternité que je suis bloqué ici...",
+        "mysterious-client~$> Je vais tester si tu es prêt à dialoguer mais attention car tu dois t'adapter à ce que je te demande.",
+        "mysterious-client~$> Je préfère changer le canal, allons sur la voie 8593 pour communiquer.",
+        "mysterious-client~$> Envoi GET /ping (attendu:pong)",
+        "mysterious-client~$> Envoi POST /flag1 (attendu:ok)",
+        "mysterious-client~$> Envoi GET /echo?token=test (attendu:test)",
+        "mysterious-client~$> Envoi POST /flag2 (attendu:ok)",
+        "mysterious-client~$> Deux autres clients viennent de se réveiller, ils arrivent en parallèle...",
+        "mysterious-client~$> Envoi GET /clients Observez bien les requêtes envoyées. (attendu:retour du numéro correspondant pour les 2 clients et retour de la somme pour la route du résultat)",
+        "mysterious-client~$> Et pour finir...",
+        "mysterious-client~$> Envoi POST /flag3 (attendu:ok)",
+        "mysterious-client~$> Hmmm... Bravo tu as montré que tu étais digne de reconstituer la clé.",
+        "mysterious-client~$> Combine les fragments de clé et récupère ton dû...",
+        "mysterious-client is disconnected."
+      ]
+    }
+    
+    const expectations = {
+      "/ping": "pong",
+      "/ping?token": "le token envoyé",
+      "/flag1": "ok",
+      "/echo": "le mot envoyé",
+      "/clientA": "le numéro envoyé par clientA",
+      "/clientB": "le numéro envoyé par clientB",
+      "/result": "la somme des deux numéros",
+      "/flag2": "2e fragment du flag",
+      "/flag3": "3e fragment du flag"
+    };
 
     function addMessage(text) {
       const msgBox = document.createElement('div');
@@ -142,15 +167,26 @@
       document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
     }
 
-    async function sendRequest(endpoint, method="GET") {
+    async function sendRequest(endpoint, method = "GET", bodyContent = null) {
       try {
-        const res = await fetch(`http://localhost:4444${endpoint}`, { method });
+        const options = { method };
+
+        if (bodyContent !== null && method === "POST") {
+          options.body = bodyContent;
+          options.headers = { "Content-Type": "text/plain" };
+        }
+
+        const res = await fetch(`http://localhost:8080/api${endpoint}`, options);
         if (!res.ok) throw new Error("Erreur serveur");
-        return await res.text();
+        const text = await res.text();
+        //addMessage(`mysterious-client~$> Réponse de ${endpoint}: ${text} (attendu: ${expectations[endpoint.split("?")[0]]})`);
+        return text;
       } catch (e) {
-        document.getElementById('resetBtn').style.display = "block";
+        document.getElementById("resetBtn").style.display = "block";
         clearInterval(intervalId);
-        addMessage("mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 ");
+        addMessage(
+          "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+        );
         return null;
       }
     }
@@ -160,16 +196,128 @@
         if (index < messages.length) {
           const msg = messages[index];
           addMessage(msg);
+          
+          // PING
+          if (msg.includes("GET /ping")) {
+            try {
+              const resp = await sendRequest("/ping");
+              if(resp !== "pong") {
+                throw new Error("Erreur serveur")
+              }
+            } catch(e) {
+              document.getElementById("resetBtn").style.display = "block";
+              clearInterval(intervalId);
+              addMessage(
+                "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+              );
+              return null;
+            }
+          }
 
-          if (msg.includes("GET /ping")) await sendRequest("/ping");
-          if (msg.includes("GET /echo")) await sendRequest("/echo");
-          if (msg.includes("POST /flag")) await sendRequest("/flag", "POST");
+          // ECHO
+          if (msg.includes("GET /echo")) {
+            try {
+              const randomWord = Math.random().toString(36).substring(2,8);
+              const resp = await sendRequest(`/echo?token=${randomWord}`);
+              if(resp !== randomWord) {
+                throw new Error("Erreur serveur");
+              }
+            } catch (e) { 
+              document.getElementById("resetBtn").style.display = "block";
+              clearInterval(intervalId);
+              addMessage(
+                "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+              );
+              return null;
+            }
+          }
+
+          // FLAG1
+          if (msg.includes("POST /flag1")) {
+            try {
+              const resp = await sendRequest("/flag1", "POST", "RkxBR3tZMHVf");
+              if(resp !== "ok") {
+                throw new Error("Erreur serveur");
+              } 
+            } catch (e) { 
+                document.getElementById("resetBtn").style.display = "block";
+                clearInterval(intervalId);
+                addMessage(
+                  "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+                );
+                return null;
+            }
+          }
+
+          // FLAG2
+          if (msg.includes("POST /flag2")) {
+            try {
+              const resp = await sendRequest("/flag2", "POST", "YXIzX2FfcjNh");
+              if(resp !== "ok") {
+                throw new Error("Erreur serveur");
+              }
+            } catch (e) {
+              document.getElementById("resetBtn").style.display = "block";
+              clearInterval(intervalId);
+              addMessage(
+                "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+              );
+              return null;
+            }
+          }
+
+          // FLAG3
+          if (msg.includes("POST /flag3")) {
+            try {
+              const resp = await sendRequest("/flag3", "POST", "MV9Hb3BoM3J9");
+              if(resp !== "ok") {
+                throw new Error("Erreur serveur");
+              } 
+            } catch (e) {
+              document.getElementById("resetBtn").style.display = "block";
+              clearInterval(intervalId);
+              addMessage(
+                "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+              );
+              return null;
+            }
+          }
+
+          // CLIENTS
+          if (msg.includes("GET /clients")) {
+            const numA = Math.floor(Math.random() * 10) + 1;
+            const numB = Math.floor(Math.random() * 10) + 1;
+
+            try {
+              const [resA, resB] = await Promise.all([
+                sendRequest(`/clientA?num=${numA}`),
+                sendRequest(`/clientB?num=${numB}`)
+              ]);
+
+              if (parseInt(resA) !== numA || parseInt(resB) !== numB) {
+                throw new Error("Erreur serveur");
+              }
+
+              const sum = numA + numB;
+              const result = await sendRequest(`/result`);
+              if (parseInt(result) !== sum) {
+                throw new Error("Erreur serveur");
+              }
+            } catch (e) {
+              document.getElementById("resetBtn").style.display = "block";
+              clearInterval(intervalId);
+              addMessage(
+                "mysterious-client~$> ...connexion échouée. Le serveur n'est pas prêt. Comment oses-tu venir me déranger 0_0 "
+              );
+              return null;
+            }
+          }
 
           index++;
         } else {
           clearInterval(intervalId);
         }
-      }, 2000);
+      }, 3000);
     }
 
     function resetChat() {

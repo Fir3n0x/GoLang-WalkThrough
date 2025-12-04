@@ -1,101 +1,84 @@
+
+
 package main
 
 import (
     "fmt"
+    "io"
     "net/http"
-    "sync"
-
-    "github.com/gorilla/websocket"
-    "github.com/labstack/echo/v4"
+		"strconv"
 )
 
-var upgrader = websocket.Upgrader{
-    CheckOrigin: func(r *http.Request) bool { return true },
+var lastA int
+var lastB int
+
+// GET /ping -> "pong" ou le token
+func pingHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprint(w, "pong")
 }
 
-type Client struct {
-    Conn *websocket.Conn
-    Send chan []byte
-	Username string
+// POST /flag1 -> reçoit fragment et répond "ok"
+func flag1Handler(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    defer r.Body.Close()
+    fmt.Println("Fragment flag1 reçu:", string(body))
+    fmt.Fprint(w, "ok")
 }
 
-var (
-    clients   = make(map[*Client]bool)
-    broadcast = make(chan []byte)
-    mutex     sync.Mutex
-)
+// GET /echo?word=XYZ -> renvoie XYZ
+func echoHandler(w http.ResponseWriter, r *http.Request) {
+    word := r.URL.Query().Get("token")
+    fmt.Fprint(w, word)
+}
+
+// GET /clientA?num=INT -> renvoie INT
+func clientAHandler(w http.ResponseWriter, r *http.Request) {
+    numStr := r.URL.Query().Get("num")
+		n, _ := strconv.Atoi(numStr)
+		lastA = n
+    fmt.Fprint(w, numStr)
+}
+
+// GET /clientB?num=INT -> renvoie INT
+func clientBHandler(w http.ResponseWriter, r *http.Request) {
+    numStr := r.URL.Query().Get("num")
+		n, _ :=strconv.Atoi(numStr)
+		lastB = n
+		fmt.Fprint(w, numStr)
+}
+
+// GET /result -> renvoie la somme
+func resultHandler(w http.ResponseWriter, r *http.Request) {
+    sum := lastA + lastB
+    fmt.Fprint(w, sum)
+}
+
+// POST /flag2 -> reçoit fragment et répond "ok"
+func flag2Handler(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    defer r.Body.Close()
+    fmt.Println("Fragment flag2 reçu:", string(body))
+    fmt.Fprint(w, "ok")
+}
+
+// POST /flag3 -> reçoit fragment et répond "ok"
+func flag3Handler(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    defer r.Body.Close()
+    fmt.Println("Fragment flag3 reçu:", string(body))
+    fmt.Fprint(w, "ok")
+}
 
 func main() {
-    e := echo.New()
+    http.HandleFunc("/ping", pingHandler)
+    http.HandleFunc("/flag1", flag1Handler)
+    http.HandleFunc("/echo", echoHandler)
+		http.HandleFunc("/clientA", clientAHandler)
+		http.HandleFunc("/clientB", clientBHandler)
+    http.HandleFunc("/result", resultHandler)
+    http.HandleFunc("/flag2", flag2Handler)
+    http.HandleFunc("/flag3", flag3Handler)
 
-    // WebSocket route
-    e.GET("/ws", func(c echo.Context) error {
-
-		username := c.QueryParam("username")
-		if username == "" {
-			username = "Anonymous"
-		}
-
-        conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
-        if err != nil {
-            return err
-        }
-
-        client := &Client{Conn: conn, Send: make(chan []byte), Username: username}
-        mutex.Lock()
-        clients[client] = true
-        mutex.Unlock()
-
-        go handleRead(client)
-        go handleWrite(client)
-
-        return nil
-    })
-
-    // Goroutine to broadcast messages
-    go func() {
-        for {
-            msg := <-broadcast
-            mutex.Lock()
-            for client := range clients {
-                select {
-                case client.Send <-  msg:
-                default:
-                    close(client.Send)
-                    delete(clients, client)
-                }
-            }
-            mutex.Unlock()
-        }
-    }()
-
-    e.Logger.Fatal(e.Start(":8080"))
-}
-
-func handleRead(client *Client) {
-    defer func() {
-        mutex.Lock()
-        delete(clients, client)
-        mutex.Unlock()
-        client.Conn.Close()
-    }()
-
-    for {
-        _, msg, err := client.Conn.ReadMessage()
-        if err != nil {
-            break
-        }
-        fmt.Printf("Message reçu: %s~: %s\n", client.Username, string(msg))
-		fullMsg := fmt.Sprintf("%s~: %s", client.Username, string(msg))
-        broadcast <- []byte(fullMsg)
-    }
-}
-
-func handleWrite(client *Client) {
-    for msg := range client.Send {
-        err := client.Conn.WriteMessage(websocket.TextMessage, msg)
-        if err != nil {
-            break
-        }
-    }
+    fmt.Println("Serveur démarré sur le port 8593...")
+    http.ListenAndServe(":8593", nil)
 }

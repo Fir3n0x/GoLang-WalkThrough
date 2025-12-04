@@ -1,43 +1,74 @@
+
+
 package main
 
 import (
     "bufio"
+    "encoding/base64"
     "fmt"
+    "net/http"
     "os"
-    "strconv"
+    "sync"
 )
 
+func worker(id int, jobs <-chan string, results chan<- string, wg *sync.WaitGroup) {
+    defer wg.Done()
+    for encoded := range jobs {
+        // Décodage Base64
+        decoded, err := base64.StdEncoding.DecodeString(encoded)
+        if err != nil {
+            continue
+        }
+        url := "http://localhost:8080" + string(decoded)
+				
+        // Requête HTTP
+        resp, err := http.Get(url)
+        if err != nil {
+            continue
+        }
+        resp.Body.Close()
+
+        // Vérification du code
+        if resp.StatusCode >= 200 && resp.StatusCode < 400 || resp.StatusCode == 403 || resp.StatusCode == 401 {
+            results <- fmt.Sprintf("%s -> %d", url, resp.StatusCode)
+        }
+    }
+}
+
 func main() {
-    // Ouvrir le fichier
-    file, err := os.Open("input.txt")
+    file, err := os.Open("paths.txt")
     if err != nil {
-        fmt.Println("Erreur ouverture fichier:", err)
-        return
+        panic(err)
     }
     defer file.Close()
 
-    // Lire les nombres
-    var numbers []int
+    jobs := make(chan string, 100)
+    results := make(chan string, 100)
+
+    var wg sync.WaitGroup
+
+    // Lancement de 10 workers
+    for w := 1; w <= 10; w++ {
+        wg.Add(1)
+        go worker(w, jobs, results, &wg)
+    }
+
+    // Lecture du fichier
     scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        n, err := strconv.Atoi(scanner.Text())
-        if err == nil {
-            numbers = append(numbers, n)
+    go func() {
+        for scanner.Scan() {
+            jobs <- scanner.Text()
         }
-    }
+        close(jobs)
+    }()
 
-    // Channel pour les résultats
-    results := make(chan int)
+    // Collecte des résultats
+    go func() {
+        wg.Wait()
+        close(results)
+    }()
 
-    // Lancer les goroutines
-    for _, num := range numbers {
-        go func(n int) {
-            results <- n * n // calcul du carré
-        }(num)
-    }
-
-    // Récupérer les résultats
-    for i := 0; i < len(numbers); i++ {
-        fmt.Println(<-results)
+    for r := range results {
+        fmt.Println("Valid path:", r)
     }
 }

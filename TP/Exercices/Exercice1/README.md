@@ -1,32 +1,26 @@
 # GoLang-WalkThrough
 
-## Lecture et calcul concurrent avec goroutines
+## Exploration de routes HTTP
 
-Dans cet exercice, vous allez écrire un programme en Go qui lit des nombres depuis un fichier texte et effectue des calculs en parallèle à l’aide des goroutines et des channels.
+Vous vous appêtez à aider le petit Gopher à retrouver sa clé égarée. Les indices vous orientent sur la piste de chemins à explorer. C'est donc par là que vous allez commencer votre investigation... Pour ce faire, vous trouvez un fichier paths.txt contenant des chemins encodés en base64. Décodez-les un par un, testez et récupérez les chemins utiles.
 
 ---
 
 ### Objectif
 
--Lire une liste de nombres depuis un fichier numbers.txt.
--Pour chaque nombre, lancer une goroutine qui calcule son carré.
--Utiliser un channel pour récupérer les résultats et les afficher dans l’ordre où ils arrivent.
-
+* Explorer les différents chemins pour trouver ceux qui permettent de continuer le challenge.
+* Utiliser dans un premier temps une approche séquentielle puis dans un second temps une approche parallélisée pour augmenter la vitesse de recherche.
 
 ---
 
 ### Rappel pédagogique
 
 Goroutine : une fonction exécutée de manière concurrente avec d’autres fonctions.
+
+
 Channel : un mécanisme de communication sécurisé entre goroutines.
+
+
 Pourquoi ? → Ce modèle permet de paralléliser des tâches simples et de comprendre la base de la concurrence en Go.
 
-
----
-
-### Questions pour aller plus loin :
-
-Que se passe-t-il si vous avez 10 000 nombres ?
-Comment limiter le nombre de goroutines pour éviter la surcharge ? (1 go routine pour chaque nombre, consommation de ressources élevée -> utilisation des sync.WaitGroup et des workers)
-Quelle différence entre ce modèle et un traitement séquentiel ?
 
