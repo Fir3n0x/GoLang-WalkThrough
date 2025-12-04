@@ -90,11 +90,11 @@ Sortie :
 Version séquentielle :
 
 ```bash
-go run 2-1.go '$2a$10$I8RAZxW71RBVFTmeHOoXHO1e1bk8EaGsA0f.AZBZ8UxIQfLSCsami' .\rockyou.txt
+go run 2-1.go '$2a$10$fMseHU97hUrALqerox/xluLxU2L7aI9zY5HW94jmJxnvTdMz.uWGu' .\rockyou.txt
 ```
 
 Version concurrente :
 
 ```bash
-go run 2-2 '$2a$10$dJq4XBcA/CfnKwORyroj7e86RY5UbwkTomWzSo4AHnMTO7kdh7rae' .\10k-most-common.txt
+go run 2-2 '$2a$10$rne/oP9aH7CgPbkhI..ZvOBhzePQkhW4s8gbpaTeeJG9nZnb0EtwG' .\10k-most-common.txt
 ```

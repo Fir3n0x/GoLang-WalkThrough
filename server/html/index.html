@@ -111,12 +111,25 @@
     }
     .btn {
       display: inline-block;
+      width: 100%;
+      text-align: center;
       padding: 0.6rem 0.9rem;
       border-radius: 9px;
       text-decoration: none;
       color: var(--text);
       border: 1px solid rgba(148,163,184,0.22);
       background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+    }
+    .info-btn {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 9px;
+      text-decoration: none;
+      color: #081018;
+      background: linear-gradient(180deg, #38bdf8, #22c55e);
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
     }
     .btn.primary {
       color: #081018;
@@ -165,6 +178,10 @@
     <div class="subtitle">Aide le petit Gopher à déverrouiller ce serveur et retrouver sa clé</div>
 
     <div class="flag-format">Format de la clé à récupérer : FLAG{X}</div>
+
+    <button class="info-btn" onclick="alert('L\'appellation CTF (Capture The Flag) fait référence à une compétition de cybersécurité où les participants doivent résoudre des énigmes techniques pour trouver des clés cachées appelées flags.')">
+      ℹ️ Info CTF
+    </button>
   </header>
 
   <div class="container">
@@ -226,15 +243,6 @@
         <a class="btn primary" href="/">Commencer l’exploration</a>      
       </div>
     </div>
-
-    <div class="panel">
-      <h2>Conseils au Gopher</h2>
-      <p><strong>Observation:</strong> Observe les <code>requêtes</code></p>
-      <p><strong>Patience:</strong> Le serveur ne parle pas vite à ceux qui poussent trop fort. Cadence tes requêtes.</p>
-      <p><strong>Structure:</strong> Ne pas hésitez à utiliser les workers et les goroutines.</p>
-      <p class="mystery">"La clé est sur le serveur, mais tous les chemins n'y mènent pas :)"</p>
-    </div>
-  </div>
 
   <footer>
     Bonne chance, Gopher. Le serveur ne cède qu’à ceux qui cherchent avec méthode.
