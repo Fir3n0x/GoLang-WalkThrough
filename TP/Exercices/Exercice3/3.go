@@ -8,6 +8,8 @@ import (
 		"strconv"
 )
 
+// TODO : Créer les différents endpoints pour interagir avec le serveur
+
 // / endpoint
 func Handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprint(w, "")
