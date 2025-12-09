@@ -28,6 +28,39 @@ Faites la rencontre d'un mystérieux client.
 Répondez lui jusqu'à ce qu'il vous donne une récompense.
 Crez un serveur de réponse à l'aide du framework Echo de Go.
 
+---
+
+## Installation de Go
+
+1. Téléchargez et installez Go depuis le site officiel : https://go.dev/dl/ (choisissez la dernière version stable pour votre système d'exploitation, par exemple **go1.25.5**)
+
+2. Supprimez les anciennes versions de Go si nécessaire :
+
+```bash
+sudo rm -rf /usr/local/go
+```
+
+3. Extrayez l'archive téléchargée et installez Go (adaptez le nom du fichier si besoin) :
+
+```bash
+sudo tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz
+``` 
+
+4. Ajoutez Go à votre variable d'environnement PATH :
+
+- Si vous utilisez bash :
+
+```bash
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+- Si vous utilisez zsh :
+
+```bash
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.zshrc
+source ~/.zshrc
+```
 
 ---
 
@@ -47,7 +80,5 @@ docker run -p 8080:80 ctf-go
 
 ### Accéder au projet
 
-Ouvrez votre navigateur et rendez-vous sur :
-
-http://localhost:8080/
+Ouvrez votre navigateur et rendez-vous sur : http://localhost:8080/
 

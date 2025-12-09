@@ -23,7 +23,7 @@ func main() {
 		return
 	}
 
-	// Retrieve parameters
+	// Récupération des paramètres
 	target := os.Args[1]
 	wordlist := os.Args[2]
 
@@ -47,6 +47,7 @@ func main() {
 	
 	// TODO : Regarder la réponse du channel
 	// Si le hash est trouvé alors break
+	found := ""
 	
 	// TODO : Affichage du résultat
 }

@@ -12,9 +12,7 @@
 
 On commence par un exemple simple : exécuter plusieurs tâches l'une après l'autre.
 
-
-
-```bash
+```go
 package main
 
 import (
@@ -34,10 +32,8 @@ func main() {
     task("Tâche 3")
 }
 ```
-
 Ici, chaque tâche attend la fin de la précédente.
 Durée totale environ 3 secondes.
-
 
 ---
 
@@ -45,8 +41,7 @@ Durée totale environ 3 secondes.
 
 En Go, on peut lancer une fonction dans une goroutine avec le mot-clé **go**.
 
-```bash
-
+```go
 func main() {
     go task("Tâche 1")
     go task("Tâche 2")
@@ -61,15 +56,13 @@ Les trois tâches démarrent en même temps.
 Durée totale environ 1 seconde (exécution en parallèle).
 Ici, on utilise **time.Sleep** pour attendre, mais ce n'est pas une bonne pratique. On verra mieux avec les channels.
 
-
 ---
 
 ### 3. Synchronisation avec channels
 
 Les channels permettent de communiquer entre goroutines et de synchroniser leur fin.
 
-```bash
-
+```go
 func task(name string, done chan bool) {
     fmt.Println("Début de", name)
     time.Sleep(1 * time.Second)
@@ -94,15 +87,13 @@ func main() {
 Ici, on attend explicitement que les trois goroutines aient fini.
 Durée totale environ 1 seconde, mais avec une synchronisation propre.
 
-
 ---
 
 ### 4. Modèle des workers
 
 Les workers sont des goroutines qui consomment des tâches depuis un channel. C'est un modèle classique pour paralléliser du travail.
 
-```bash
-
+```go
 func worker(id int, jobs <-chan int, results chan<- int) {
     for j := range jobs {
         fmt.Printf("Worker %d traite le job %d\n", id, j)
@@ -135,7 +126,6 @@ func main() {
 
 Ici, 3 workers traitent les jobs en parallèle.
 Durée totale environ 2 secondes au lieu de 5 si tout était séquentiel.
-
 
 ---
 

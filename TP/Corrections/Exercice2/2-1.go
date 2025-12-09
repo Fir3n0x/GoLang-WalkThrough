@@ -6,7 +6,6 @@ import (
 	"os"
 	"strings"
 	"time"
-    
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -10,7 +10,7 @@ import (
 
 // TODO : Créer les différents endpoints pour interagir avec le serveur
 
-// / endpoint
+// endpoint
 func Handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprint(w, "")
 }

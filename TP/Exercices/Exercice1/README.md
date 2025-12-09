@@ -15,12 +15,12 @@ Vous vous appêtez à aider le petit Gopher à retrouver sa clé égarée. Les i
 
 ### Rappel pédagogique
 
-Goroutine : une fonction exécutée de manière concurrente avec d’autres fonctions.
+**Goroutine** : une fonction exécutée de manière concurrente avec d’autres fonctions.
 
 
-Channel : un mécanisme de communication sécurisé entre goroutines.
+**Channel** : un mécanisme de communication sécurisé entre goroutines.
 
 
-Pourquoi ? → Ce modèle permet de paralléliser des tâches simples et de comprendre la base de la concurrence en Go.
+**Pourquoi ?** → Ce modèle permet de paralléliser des tâches simples et de comprendre la base de la concurrence en Go.
 
 
