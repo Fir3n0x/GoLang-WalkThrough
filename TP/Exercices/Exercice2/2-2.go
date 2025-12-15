@@ -32,6 +32,9 @@ func main() {
 	// TODO : Ouvrir le fichier
 	
 	// TODO : Lecture du fichier
+
+	// Démarrer le chronomètre
+	start := time.Now()
 	
 	// Variables pour channel et synchronisation
 	result := make(chan string, 1)
@@ -50,4 +53,5 @@ func main() {
 	found := ""
 	
 	// TODO : Affichage du résultat
+	elapsed := time.Since(start)
 }

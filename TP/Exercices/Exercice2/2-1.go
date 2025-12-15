@@ -26,10 +26,14 @@ func main() {
 	
 	// TODO : Lire le fichier
 	
+	// Démarrer le chronomètre
+	start := time.Now()
+
 	found := ""
 	fmt.Println("Cassage du hash ", target, "...")
 
 	// TODO : Casser le hash
 	
 	// TODO : Affichage du résultat
+	elapsed := time.Since(start)
 }

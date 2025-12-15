@@ -27,5 +27,5 @@ A la fin de votre échange, le client mystérieux vous donnera une récompense.
 go run 3.go
 ```
 
-Puis ouvrez accéder à la page qui donne accés au coffre. Vous y trouverez le client mystérieux et pourrez alors communiquer avec lui.
+Puis accédez à la page qui donne accès au coffre. Vous y trouverez le client mystérieux et pourrez alors communiquer avec lui.
 Votre serveur doit tourner sur le port 8593 de votre localhost.
