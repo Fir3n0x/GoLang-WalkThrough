@@ -26,7 +26,7 @@ Comparer une version séquentielle et une version parallélisée avec goroutines
 Accéder au coffre sécurisé.
 Faites la rencontre d'un mystérieux client.
 Répondez lui jusqu'à ce qu'il vous donne une récompense.
-Crez un serveur de réponse à l'aide du framework Echo de Go.
+Crez un serveur de réponse en Go afin de répondre aux requêtes du client.
 
 ---
 
@@ -81,4 +81,5 @@ docker run -p 8080:80 ctf-go
 ### Accéder au projet
 
 Ouvrez votre navigateur et rendez-vous sur : http://localhost:8080/
+
 
