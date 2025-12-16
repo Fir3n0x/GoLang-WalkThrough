@@ -26,11 +26,27 @@ Comparer une version séquentielle et une version parallélisée avec goroutines
 Accéder au coffre sécurisé.
 Faites la rencontre d'un mystérieux client.
 Répondez lui jusqu'à ce qu'il vous donne une récompense.
-Crez un serveur de réponse en Go afin de répondre aux requêtes du client.
+Créer un serveur HTTP en Go qui expose plusieurs routes en fonction de ce que demande
+le challenge.
 
 ---
 
-## Installation de Go
+## Installation et Environnement
+
+### Installation de Go via apt (rapide)
+1. Exécutez ces commandes :
+
+```bash
+sudo apt update
+sudo apt install -y golang - go
+```
+1. Vérifiez si Go est bien installé :
+
+```bash
+go version
+```
+
+### Installation de Go via le site officiel (plus long)
 
 1. Téléchargez et installez Go depuis le site officiel : https://go.dev/dl/ (choisissez la dernière version stable pour votre système d'exploitation, par exemple **go1.25.5**)
 
@@ -66,20 +82,25 @@ source ~/.zshrc
 
 ## Exécution du projet avec Docker
 
-### Construire l'image Docker
+1. Cloner le projet :
+
+```bash
+git clone https://github.com/Fir3n0x/GoLang-WalkThrough.git
+```
+
+2. Construire l'image Docker :
 
 ```bash
 docker build -t ctf-go .
 ```
 
-### Exécuter le container
+3. Exécuter le container
 
 ```bash
 docker run -p 8080:80 ctf-go
 ```
 
-### Accéder au projet
+4. Accéder au projet
 
 Ouvrez votre navigateur et rendez-vous sur : http://localhost:8080/
-
 
